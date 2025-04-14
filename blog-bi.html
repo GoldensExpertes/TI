@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todos os Artigos | Blog TechSoft</title>
+    <style>
+        /* Copie o CSS da página principal */
+        .blog-archive {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .archive-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .archive-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+
+    <div class="blog-archive">
+        <h1 class="archive-title">Todos os Artigos</h1>
+        
+        <div class="archive-grid">
+            <!-- Artigo 1 -->
+            <div class="archive-card">
+                <img src="https://source.unsplash.com/random/600x400/?automation" alt="Automação">
+                <div class="archive-content">
+                    <h3>Automação de Processos Empresariais</h3>
+                    <p>Como implementar automação para aumentar a produtividade em até 60%...</p>
+                    <a href="blog-automacao.html" class="btn">Ler Artigo</a>
+                </div>
+            </div>
+            
+            <!-- Artigo 2 -->
+            <div class="archive-card">
+                <img src="https://source.unsplash.com/random/600x400/?analytics" alt="Business Intelligence">
+                <div class="archive-content">
+                    <h3>BI para Gestão Empresarial</h3>
+                    <p>Transforme dados brutos em insights valiosos com essas estratégias...</p>
+                    <a href="blog-bi.html" class="btn">Ler Artigo</a>
+                </div>
+            </div>
+            
+            <!-- Artigo 3 -->
+            <div class="archive-card">
+                <img src="https://source.unsplash.com/random/600x400/?security" alt="Segurança">
+                <div class="archive-content">
+                    <h3>Segurança de Dados em 2023</h3>
+                    <p>As melhores práticas para proteger seus dados empresariais...</p>
+                    <a href="blog-seguranca.html" class="btn">Ler Artigo</a>
+                </div>
+            </div>
+            
+            <!-- Adicione mais artigos conforme necessário -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+</body>
+</html>
