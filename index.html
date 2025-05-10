@@ -1,1063 +1,784 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechSoft Solutions - Software de Gestão Empresarial</title>
+    <title>Academia Digital - Cursos Profissionais Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset e Estilos Globais */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .hero-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         }
-        
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
+        .course-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        
-        a {
-            text-decoration: none;
-            color: #0066cc;
-            transition: color 0.3s;
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        
-        a:hover {
-            color: #004499;
+        .testimonial-card {
+            transition: all 0.3s ease;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .testimonial-card:hover {
+            transform: translateY(-5px);
         }
-        
-        .btn {
-            display: inline-block;
-            background-color: #0066cc;
+        .filter-btn.active {
+            background-color: #6366f1;
             color: white;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: background-color 0.3s, transform 0.2s;
         }
-        
-        .btn:hover {
-            background-color: #004499;
-            color: white;
-            transform: translateY(-2px);
+        #courses-section {
+            scroll-margin-top: 100px;
         }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        
-        section {
-            padding: 80px 0;
-        }
-        
-        h1, h2, h3, h4 {
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-        }
-        
-        h2 {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-        
-        h2:after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background-color: #0066cc;
-            margin: 15px auto 0;
-        }
-        
-        p {
-            margin-bottom: 15px;
-        }
-        
-        /* Header */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        .modal {
+            display: none;
             position: fixed;
-            width: 100%;
+            z-index: 100;
+            left: 0;
             top: 0;
-            z-index: 1000;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
         }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0066cc;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
-        .nav-links a {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .nav-links a:hover {
-            color: #0066cc;
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        #hero {
-            background: linear-gradient(135deg, #0066cc, #004499);
-            color: white;
-            padding: 180px 0 100px;
-            text-align: center;
-        }
-        
-        #hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        
-        #hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .hero-buttons .btn {
+        .modal-content {
             background-color: white;
-            color: #0066cc;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 80%;
+            max-width: 600px;
+            animation: modalopen 0.3s;
         }
-        
-        .hero-buttons .btn:hover {
-            background-color: #f0f0f0;
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
         }
-        
-        .hero-buttons .btn-secondary {
-            background-color: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-        
-        .hero-buttons .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Features Section */
-        #features {
-            background-color: white;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .feature-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            color: #0066cc;
-            margin-bottom: 20px;
-        }
-        
-        /* Testimonials */
-        #testimonials {
-            background-color: #f8f9fa;
-        }
-        
-        .testimonials-slider {
-            max-width: 800px;
-            margin: 0 auto;
+        .course-details-header {
+            background-size: cover;
+            background-position: center;
+            height: 200px;
             position: relative;
         }
-        
-        .testimonial {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            display: none;
-        }
-        
-        .testimonial.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .testimonial img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto 20px;
-            display: block;
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-        
-        .testimonial-author {
-            font-weight: 700;
-        }
-        
-        .testimonial-role {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        
-        .slider-controls {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-            gap: 10px;
-        }
-        
-        .slider-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #ccc;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .slider-dot.active {
-            background-color: #0066cc;
-        }
-        
-        /* Pricing */
-        #pricing {
-            background-color: white;
-        }
-        
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .pricing-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 40px 30px;
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .pricing-card.popular {
-            border: 2px solid #0066cc;
-        }
-        
-        .popular-badge {
-            position: absolute;
-            top: -15px;
-            right: 20px;
-            background-color: #0066cc;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 20px 0;
-            color: #0066cc;
-        }
-        
-        .price span {
-            font-size: 1rem;
-            color: #6c757d;
-        }
-        
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-        
-        .pricing-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        /* Demo */
-        #demo {
-            background: linear-gradient(135deg, #0066cc, #004499);
-            color: white;
-            text-align: center;
-        }
-        
-        #demo h2 {
-            color: white;
-        }
-        
-        #demo h2:after {
-            background-color: white;
-        }
-        
-        #demo p {
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-        
-        .demo-container {
-            max-width: 800px;
-            margin: 50px auto 0;
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .demo-video {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 */
-            height: 0;
-            overflow: hidden;
-        }
-        
-        .demo-video iframe {
+        .course-details-header::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
         }
-        
-        /* Blog */
-        #blog {
-            background-color: #f8f9fa;
-        }
-        
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .blog-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .blog-image {
-            height: 200px;
-            overflow: hidden;
-        }
-        
-        .blog-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .blog-card:hover .blog-image img {
-            transform: scale(1.1);
-        }
-        
-        .blog-content {
-            padding: 20px;
-        }
-        
-        .blog-date {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-        
-        .blog-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        
-        .blog-excerpt {
-            color: #6c757d;
-            margin-bottom: 15px;
-        }
-        
-        /* Contact */
-        #contact {
-            background-color: white;
-        }
-        
-        .contact-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
-            margin-top: 50px;
-        }
-        
-        .contact-info h3 {
-            margin-bottom: 30px;
-        }
-        
-        .contact-details {
-            margin-bottom: 30px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        
-        .contact-icon {
-            font-size: 1.5rem;
-            color: #0066cc;
-            margin-right: 15px;
-            margin-top: 5px;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f8f9fa;
-            color: #0066cc;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        .social-link:hover {
-            background-color: #0066cc;
-            color: white;
-        }
-        
-        .contact-form .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .contact-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-        
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-color: #0066cc;
-            outline: none;
-        }
-        
-        .contact-form textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #212529;
-            color: white;
-            padding: 60px 0 20px;
-        }
-        
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 20px;
-            display: block;
-        }
-        
-        .footer-about p {
-            color: #adb5bd;
-            margin-bottom: 20px;
-        }
-        
-        .footer-links h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-        
-        .footer-links ul {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-links a {
-            color: #adb5bd;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .footer-newsletter p {
-            color: #adb5bd;
-            margin-bottom: 20px;
-        }
-        
-        .newsletter-form {
-            display: flex;
-        }
-        
-        .newsletter-form input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 4px 0 0 4px;
-            font-size: 1rem;
-        }
-        
-        .newsletter-form button {
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .newsletter-form button:hover {
-            background-color: #004499;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #495057;
-            color: #adb5bd;
-            font-size: 0.9rem;
-        }
-        
-        /* Responsivo */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background-color: white;
-                flex-direction: column;
-                padding: 20px;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            }
-            
-            .nav-links.active {
-                display: flex;
-            }
-            
-            .nav-links li {
-                margin: 10px 0;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .hero-buttons .btn {
-                width: 100%;
-            }
-            
-            section {
-                padding: 60px 0;
-            }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            z-index: 99;
         }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">TechSoft</a>
-                <button class="mobile-menu-btn">☰</button>
-                <ul class="nav-links">
-                    <li><a href="#features">Funcionalidades</a></li>
-                    <li><a href="#testimonials">Depoimentos</a></li>
-                    <li><a href="#pricing">Planos</a></li>
-                    <li><a href="#demo">Demonstração</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contato</a></li>
-                </ul>
-            </nav>
+<body class="font-sans bg-gray-50">
+    <!-- Cabeçalho -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800">Academia Digital</span>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800 transition">Início</a>
+                    <a href="#courses-section" class="text-gray-600 hover:text-indigo-600 transition">Cursos</a>
+                    <a href="#methodology" class="text-gray-600 hover:text-indigo-600 transition">Metodologia</a>
+                    <a href="#contact" class="text-gray-600 hover:text-indigo-600 transition">Contato</a>
+                </nav>
+                
+                <button id="mobile-menu-button" class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            
+            <div id="mobile-menu" class="hidden md:hidden">
+                <div class="flex flex-col space-y-3 mt-4">
+                    <a href="#" class="block py-2 text-gray-700 hover:text-indigo-600">Início</a>
+                    <a href="#courses-section" class="block py-2 text-gray-700 hover:text-indigo-600">Cursos</a>
+                    <a href="#methodology" class="block py-2 text-gray-700 hover:text-indigo-600">Metodologia</a>
+                    <a href="#contact" class="block py-2 text-gray-700 hover:text-indigo-600">Contato</a>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="hero">
-        <div class="container">
-            <h1>O Software de Gestão Empresarial Mais Completo</h1>
-            <p>Automatize seus processos, aumente sua produtividade e tome decisões baseadas em dados com nossa solução tudo-em-um para empresas de todos os tamanhos.</p>
-            <div class="hero-buttons">
-                <a href="#demo" class="btn">Experimente Grátis</a>
-                <a href="#pricing" class="btn btn-secondary">Ver Planos</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features">
-        <div class="container">
-            <h2>Funcionalidades Poderosas</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Relatórios Avançados</h3>
-                    <p>Gere relatórios personalizados com dados em tempo real para tomar decisões estratégicas informadas.</p>
+    <!-- Seção Hero -->
+    <section class="hero-gradient text-white py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Domine as habilidades mais demandadas do mercado</h1>
+                    <p class="text-xl mb-8 opacity-90">Cursos 100% online com certificado, projetos reais e suporte de especialistas para acelerar sua carreira.</p>
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <a href="#courses-section" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition text-center">
+                            Explorar Cursos
+                        </a>
+                        <a href="#methodology" class="border-2 border-white px-6 py-3 rounded-lg font-medium hover:bg-white hover:bg-opacity-10 transition text-center">
+                            Conheça a Metodologia
+                        </a>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3>Automação de Processos</h3>
-                    <p>Reduza tarefas manuais repetitivas com nossa poderosa ferramenta de automação de fluxo de trabalho.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Segurança de Dados</h3>
-                    <p>Proteção de nível empresarial com criptografia de ponta a ponta e backups automáticos.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Acesso Multiplataforma</h3>
-                    <p>Acesse de qualquer lugar, em qualquer dispositivo, com nossa aplicação web e mobile nativa.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <h3>Integrações</h3>
-                    <p>Conecte-se facilmente com as ferramentas que você já usa, como ERP, CRM e sistemas de pagamento.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>Colaboração em Equipe</h3>
-                    <p>Ferramentas integradas para comunicação e compartilhamento de arquivos entre departamentos.</p>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://images.unsplash.com/photo-1546410531-bb4ca7556a68?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Estudante aprendendo online" 
+                         class="rounded-xl shadow-2xl w-full max-w-lg">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section id="testimonials">
-        <div class="container">
-            <h2>O Que Nossos Clientes Dizem</h2>
-            <div class="testimonials-slider">
-                <div class="testimonial active">
-                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Cliente 1">
-                    <p class="testimonial-text">"O TechSoft revolucionou nossa gestão empresarial. Em 3 meses, reduzimos custos operacionais em 30% e aumentamos a produtividade em 40%."</p>
-                    <p class="testimonial-author">Ana Silva</p>
-                    <p class="testimonial-role">CEO, Empresa XYZ</p>
+    <!-- Seção Benefícios -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Por que escolher a Academia Digital?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Nossa abordagem prática e focada no mercado faz a diferença</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-laptop-code text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">Aulas 100% Práticas</h3>
+                    <p class="text-gray-600 text-center">Aprenda fazendo com projetos reais que simulam desafios do mercado de trabalho.</p>
                 </div>
-                <div class="testimonial">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente 2">
-                    <p class="testimonial-text">"A implementação foi simples e o suporte excepcional. Finalmente temos todos os departamentos integrados em uma única plataforma."</p>
-                    <p class="testimonial-author">Carlos Mendes</p>
-                    <p class="testimonial-role">Diretor de Operações, ABC Corp</p>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-certificate text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">Certificado Reconhecido</h3>
+                    <p class="text-gray-600 text-center">Certificado digital com validade nacional para comprovar suas habilidades.</p>
                 </div>
-                <div class="testimonial">
-                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Cliente 3">
-                    <p class="testimonial-text">"Os relatórios personalizados nos deram insights que nunca tínhamos antes. Vale cada centavo do investimento."</p>
-                    <p class="testimonial-author">Mariana Oliveira</p>
-                    <p class="testimonial-role">Gerente Financeira, 123 Indústrias</p>
-                </div>
-                <div class="slider-controls">
-                    <div class="slider-dot active" data-slide="0"></div>
-                    <div class="slider-dot" data-slide="1"></div>
-                    <div class="slider-dot" data-slide="2"></div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-headset text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">Suporte Individual</h3>
+                    <p class="text-gray-600 text-center">Tire dúvidas diretamente com instrutores e mentores especializados.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section id="pricing">
-        <div class="container">
-            <h2>Planos Acessíveis</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Básico</h3>
-                    <div class="price">R$99<span>/mês</span></div>
-                    <ul class="pricing-features">
-                        <li>Até 10 usuários</li>
-                        <li>5GB de armazenamento</li>
-                        <li>Relatórios básicos</li>
-                        <li>Suporte por e-mail</li>
-                        <li>Integrações limitadas</li>
-                    </ul>
-                    <a href="#" class="btn btn-secondary">Assinar</a>
-                </div>
-                <div class="pricing-card popular">
-                    <div class="popular-badge">Popular</div>
-                    <h3>Profissional</h3>
-                    <div class="price">R$199<span>/mês</span></div>
-                    <ul class="pricing-features">
-                        <li>Até 50 usuários</li>
-                        <li>20GB de armazenamento</li>
-                        <li>Relatórios avançados</li>
-                        <li>Suporte prioritário</li>
-                        <li>Todas as integrações</li>
-                        <li>Automação de fluxos</li>
-                    </ul>
-                    <a href="#" class="btn">Assinar</a>
-                </div>
-                <div class="pricing-card">
-                    <h3>Empresarial</h3>
-                    <div class="price">R$499<span>/mês</span></div>
-                    <ul class="pricing-features">
-                        <li>Usuários ilimitados</li>
-                        <li>100GB de armazenamento</li>
-                        <li>Relatórios personalizados</li>
-                        <li>Suporte 24/7</li>
-                        <li>Integrações premium</li>
-                        <li>Automação avançada</li>
-                        <li>Treinamento dedicado</li>
-                    </ul>
-                    <a href="#" class="btn btn-secondary">Assinar</a>
-                </div>
+    <!-- Seção Cursos -->
+    <section id="courses-section" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Nossos Cursos</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Escolha o caminho que vai acelerar sua carreira</p>
             </div>
-            <p style="text-align: center; margin-top: 30px;">Todos os planos incluem 30 dias de teste gratuito. Não é necessário cartão de crédito.</p>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section id="demo">
-        <div class="container">
-            <h2>Experimente o TechSoft</h2>
-            <p>Assista à nossa demonstração em vídeo para ver como o TechSoft pode transformar sua gestão empresarial, ou crie uma conta gratuita para testar você mesmo.</p>
-            <div class="demo-container">
-                <div class="demo-video">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
+            
+            <!-- Filtros de Cursos -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-indigo-100 text-indigo-600 font-medium transition" data-category="all">
+                    Todos
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition" data-category="development">
+                    Desenvolvimento
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition" data-category="design">
+                    Design
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition" data-category="business">
+                    Negócios
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition" data-category="data">
+                    Dados
+                </button>
             </div>
-        </div>
-    </section>
-
-    <!-- Blog Section -->
-    <section id="blog">
-        <div class="container">
-            <h2>Últimas do Blog</h2>
-            <div class="blog-grid">
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="https://source.unsplash.com/random/600x400/?business" alt="Post 1">
+            
+            <!-- Lista de Cursos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="courses-container">
+                <!-- Curso 1 -->
+                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden" data-category="development">
+                    <div class="h-48 bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-laptop-code text-6xl text-indigo-600"></i>
                     </div>
-                    <div class="blog-content">
-                        <p class="blog-date">15 de Junho, 2023</p>
-                        <h3 class="blog-title">Como Automatizar Seus Processos Empresariais</h3>
-                        <p class="blog-excerpt">Descubra as melhores práticas para identificar e automatizar processos repetitivos em sua empresa...</p>
-                        <a href="#">Ler Mais →</a>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="https://source.unsplash.com/random/600x400/?data" alt="Post 2">
-                    </div>
-                    <div class="blog-content">
-                        <p class="blog-date">2 de Junho, 2023</p>
-                        <h3 class="blog-title">Tomada de Decisão Baseada em Dados</h3>
-                        <p class="blog-excerpt">Como transformar dados brutos em insights acionáveis que impulsionam o crescimento do seu negócio...</p>
-                        <a href="#">Ler Mais →</a>
-                    </div>
-                </div>
-                <div class="blog-card">
-                    <div class="blog-image">
-                        <img src="https://source.unsplash.com/random/600x400/?teamwork" alt="Post 3">
-                    </div>
-                    <div class="blog-content">
-                        <p class="blog-date">20 de Maio, 2023</p>
-                        <h3 class="blog-title">Ferramentas para Melhorar a Colaboração Remota</h3>
-                        <p class="blog-excerpt">Com equipes distribuídas, a colaboração eficiente é essencial. Conheça as estratégias que funcionam...</p>
-                        <a href="#">Ler Mais →</a>
-                    </div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="#" class="btn">Ver Todos os Artigos</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <h2>Fale Conosco</h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Informações de Contato</h3>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <div class="contact-icon">📍</div>
-                            <div>
-                                <p><strong>Endereço:</strong></p>
-                                <p>Av. Paulista, 1000 - São Paulo, SP</p>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Desenvolvimento Web Full Stack</h3>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">Popular</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Domine HTML, CSS, JavaScript, React, Node.js e MongoDB para criar aplicações web completas.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-gray-700 font-medium">4.9</span>
+                                <span class="text-gray-500 mx-2">|</span>
+                                <span class="text-gray-500">120h</span>
                             </div>
+                            <span class="text-indigo-600 font-bold">R$ 497</span>
                         </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">📞</div>
-                            <div>
-                                <p><strong>Telefone:</strong></p>
-                                <p>(11) 1234-5678</p>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">✉️</div>
-                            <div>
-                                <p><strong>Email:</strong></p>
-                                <p>contato@techsoft.com.br</p>
-                            </div>
-                        </div>
-                    </div>
-                    <h3 style="margin-top: 40px;">Siga-nos</h3>
-                    <div class="social-links">
-                        <a href="#" class="social-link">f</a>
-                        <a href="#" class="social-link">in</a>
-                        <a href="#" class="social-link">t</a>
-                        <a href="#" class="social-link">ig</a>
+                        <button class="view-details-btn w-full mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition" data-course="1">
+                            Ver Detalhes
+                        </button>
                     </div>
                 </div>
-                <div class="contact-form">
-                    <h3>Envie uma Mensagem</h3>
-                    <form id="form-contato">
-                        <div class="form-group">
-                            <label for="nome">Nome</label>
-                            <input type="text" id="nome" name="nome" required>
+                
+                <!-- Curso 2 -->
+                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden" data-category="development">
+                    <div class="h-48 bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-6xl text-blue-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Desenvolvimento Mobile com Flutter</h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Novo</span>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                        <p class="text-gray-600 mb-4">Crie apps nativos para iOS e Android com um único código usando Flutter e Dart.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-gray-700 font-medium">4.8</span>
+                                <span class="text-gray-500 mx-2">|</span>
+                                <span class="text-gray-500">90h</span>
+                            </div>
+                            <span class="text-blue-600 font-bold">R$ 397</span>
                         </div>
-                        <div class="form-group">
-                            <label for="empresa">Empresa</label>
-                            <input type="text" id="empresa" name="empresa">
+                        <button class="view-details-btn w-full mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition" data-course="2">
+                            Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Curso 3 -->
+                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden" data-category="data">
+                    <div class="h-48 bg-purple-100 flex items-center justify-center">
+                        <i class="fas fa-brain text-6xl text-purple-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Data Science para Iniciantes</h3>
+                            <span class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Tendência</span>
                         </div>
-                        <div class="form-group">
-                            <label for="mensagem">Mensagem</label>
-                            <textarea id="mensagem" name="mensagem" required></textarea>
+                        <p class="text-gray-600 mb-4">Introdução prática a Python, Pandas, Machine Learning e análise de dados.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-gray-700 font-medium">4.7</span>
+                                <span class="text-gray-500 mx-2">|</span>
+                                <span class="text-gray-500">60h</span>
+                            </div>
+                            <span class="text-purple-600 font-bold">R$ 297</span>
                         </div>
-                        <button type="submit" class="btn">Enviar Mensagem</button>
+                        <button class="view-details-btn w-full mt-4 bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition" data-course="3">
+                            Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Curso 4 -->
+                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden" data-category="design">
+                    <div class="h-48 bg-pink-100 flex items-center justify-center">
+                        <i class="fas fa-paint-brush text-6xl text-pink-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">UX/UI Design Avançado</h3>
+                            <span class="bg-pink-100 text-pink-800 text-xs px-2 py-1 rounded-full">Oferta</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Aprenda a criar interfaces incríveis com Figma, prototipagem e design thinking.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-gray-700 font-medium">4.9</span>
+                                <span class="text-gray-500 mx-2">|</span>
+                                <span class="text-gray-500">80h</span>
+                            </div>
+                            <span class="text-pink-600 font-bold">R$ 347</span>
+                        </div>
+                        <button class="view-details-btn w-full mt-4 bg-pink-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-pink-700 transition" data-course="4">
+                            Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Curso 5 -->
+                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden" data-category="business">
+                    <div class="h-48 bg-green-100 flex items-center justify-center">
+                        <i class="fas fa-chart-line text-6xl text-green-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Marketing Digital Completo</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Popular</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Domine SEO, Google Ads, Facebook Ads, Email Marketing e Analytics.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-gray-700 font-medium">4.8</span>
+                                <span class="text-gray-500 mx-2">|</span>
+                                <span class="text-gray-500">70h</span>
+                            </div>
+                            <span class="text-green-600 font-bold">R$ 397</span>
+                        </div>
+                        <button class="view-details-btn w-full mt-4 bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition" data-course="5">
+                            Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Curso 6 -->
+                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden" data-category="data">
+                    <div class="h-48 bg-yellow-100 flex items-center justify-center">
+                        <i class="fas fa-database text-6xl text-yellow-600"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">SQL e Banco de Dados</h3>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Essencial</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Aprenda SQL do zero, modelagem de dados e trabalhe com MySQL e PostgreSQL.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-gray-700 font-medium">4.6</span>
+                                <span class="text-gray-500 mx-2">|</span>
+                                <span class="text-gray-500">50h</span>
+                            </div>
+                            <span class="text-yellow-600 font-bold">R$ 247</span>
+                        </div>
+                        <button class="view-details-btn w-full mt-4 bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-yellow-700 transition" data-course="6">
+                            Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="load-more-btn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                    Carregar Mais Cursos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Metodologia -->
+    <section id="methodology" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Nossa Metodologia</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Aprenda de forma eficaz com nosso método exclusivo</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-indigo-600 font-bold">1</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center mb-2">Aprendizado Baseado em Projetos</h3>
+                    <p class="text-gray-600 text-sm text-center">Desenvolva habilidades resolvendo problemas reais do mercado.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-indigo-600 font-bold">2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center mb-2">Microlearning</h3>
+                    <p class="text-gray-600 text-sm text-center">Aulas curtas e objetivas para melhor retenção do conteúdo.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-indigo-600 font-bold">3</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center mb-2">Mentoria Individual</h3>
+                    <p class="text-gray-600 text-sm text-center">Feedback personalizado para acelerar seu desenvolvimento.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-indigo-600 font-bold">4</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-center mb-2">Comunidade Ativa</h3>
+                    <p class="text-gray-600 text-sm text-center">Interação com colegas e profissionais da área.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="methodology-video-btn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition flex items-center mx-auto">
+                    <i class="fas fa-play-circle mr-2"></i> Assista ao Vídeo Explicativo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Depoimentos -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Transformações Reais</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">O que nossos alunos falam sobre a experiência na Academia Digital</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Depoimento 1 -->
+                <div class="testimonial-card bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-indigo-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Carlos Silva</h4>
+                            <p class="text-gray-500 text-sm">Desenvolvedor Sênior</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-yellow-400 mb-1">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 italic">"O curso de Desenvolvimento Web mudou minha carreira. Em 6 meses consegui minha primeira vaga como desenvolvedor júnior e hoje estou em uma posição sênior."</p>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-graduation-cap mr-2"></i> Desenvolvimento Web Full Stack
+                    </div>
+                </div>
+                
+                <!-- Depoimento 2 -->
+                <div class="testimonial-card bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Ana Oliveira</h4>
+                            <p class="text-gray-500 text-sm">Product Manager</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-yellow-400 mb-1">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-700 italic">"A metodologia prática e os projetos reais me deram a confiança que precisava para migrar da área administrativa para tecnologia. Hoje sou Product Manager em uma startup."</p>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-graduation-cap mr-2"></i> UX/UI Design Avançado
+                    </div>
+                </div>
+                
+                <!-- Depoimento 3 -->
+                <div class="testimonial-card bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Roberto Santos</h4>
+                            <p class="text-gray-500 text-sm">Engenheiro de Dados</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-yellow-400 mb-1">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="text-gray-700 italic">"O curso de Ciência de Dados superou minhas expectativas. Os instrutores são acessíveis e o material é atualizado constantemente. Recomendo para quem quer entrar na área."</p>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-graduation-cap mr-2"></i> Ciência de Dados do Zero
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="view-all-testimonials" class="border-2 border-indigo-600 text-indigo-600 px-6 py-2 rounded-lg font-medium hover:bg-indigo-600 hover:text-white transition">
+                    Ver Todos os Depoimentos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Fale Conosco</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Tem dúvidas? Entre em contato com nossa equipe</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Nome</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600">
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-gray-700 font-medium mb-2">Assunto</label>
+                            <select id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600">
+                                <option value="">Selecione um assunto</option>
+                                <option value="courses">Informações sobre cursos</option>
+                                <option value="payment">Dúvidas sobre pagamento</option>
+                                <option value="technical">Suporte técnico</option>
+                                <option value="other">Outro</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Mensagem</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition w-full">
+                            Enviar Mensagem
+                        </button>
                     </form>
                 </div>
+                
+                <div>
+                    <div class="bg-gray-50 p-8 rounded-xl h-full">
+                        <h3 class="text-xl font-bold text-gray-800 mb-6">Outras Formas de Contato</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-envelope text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Email</h4>
+                                    <p class="text-gray-600">contato@academiadigital.com.br</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-phone-alt text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Telefone</h4>
+                                    <p class="text-gray-600">(11) 1234-5678</p>
+                                    <p class="text-sm text-gray-500">Segunda a sexta, das 9h às 18h</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Endereço</h4>
+                                    <p class="text-gray-600">Rua das Academias, 123</p>
+                                    <p class="text-gray-600">São Paulo - SP</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-comments text-indigo-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Redes Sociais</h4>
+                                    <div class="flex space-x-4 mt-2">
+                                        <a href="#" class="text-gray-600 hover:text-indigo-600 transition"><i class="fab fa-facebook-f text-xl"></i></a>
+                                        <a href="#" class="text-gray-600 hover:text-indigo-600 transition"><i class="fab fa-twitter text-xl"></i></a>
+                                        <a href="#" class="text-gray-600 hover:text-indigo-600 transition"><i class="fab fa-instagram text-xl"></i></a>
+                                        <a href="#" class="text-gray-600 hover:text-indigo-600 transition"><i class="fab fa-linkedin-in text-xl"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-about">
-                    <a href="#" class="footer-logo">TechSoft</a>
-                    <p>Oferecendo soluções de gestão empresarial inovadoras desde 2010. Nosso software ajuda empresas a crescerem de forma inteligente e sustentável.</p>
+    <!-- CTA Final -->
+    <section class="py-16 bg-indigo-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Pronto para transformar sua carreira?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Escolha seu curso hoje e comece sua jornada de aprendizado.</p>
+            <a href="#courses-section" class="bg-white text-indigo-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition inline-block">
+                Ver Todos os Cursos
+            </a>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-800 text-white pt-12 pb-6">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-graduation-cap text-white text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold">Academia Digital</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Transformando carreiras através da educação digital de qualidade.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <h3>Links Rápidos</h3>
-                    <ul>
-                        <li><a href="#features">Funcionalidades</a></li>
-                        <li><a href="#pricing">Planos</a></li>
-                        <li><a href="#demo">Demonstração</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#contact">Contato</a></li>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Cursos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Desenvolvimento Web</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Mobile</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Ciência de Dados</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">UX/UI Design</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Marketing Digital</a></li>
                     </ul>
                 </div>
-                <div class="footer-links">
-                    <h3>Recursos</h3>
-                    <ul>
-                        <li><a href="#">Documentação</a></li>
-                        <li><a href="#">Tutoriais em Vídeo</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Status do Sistema</a></li>
-                        <li><a href="#">API para Desenvolvedores</a></li>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Institucional</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Sobre Nós</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Trabalhe Conosco</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Parcerias</a></li>
                     </ul>
                 </div>
-                <div class="footer-newsletter">
-                    <h3>Newsletter</h3>
-                    <p>Assine nossa newsletter para receber dicas, atualizações e ofertas especiais.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Seu email">
-                        <button type="submit">✓</button>
-                    </form>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Suporte</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Central de Ajuda</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Política de Privacidade</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contato</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 TechSoft Solutions. Todos os direitos reservados. | <a href="#">Política de Privacidade</a> | <a href="#">Termos de Serviço</a></p>
+            
+            <div class="pt-6 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2023 Academia Digital. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Modal de Detalhes do Curso -->
+    <div id="course-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modal-course-title" class="text-2xl font-bold text-gray-800"></h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="modal-course-content" class="space-y-6">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+            
+            <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                <button id="enroll-btn" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-indigo-700 transition flex-1">
+                    Matricule-se Agora
+                </button>
+                <button id="share-btn" class="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg font-bold hover:bg-indigo-50 transition flex-1">
+                    <i class="fas fa-share-alt mr-2"></i> Compartilhar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Vídeo -->
+    <div id="video-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Nossa Metodologia</h3>
+                <button id="close-video-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="aspect-w-16 aspect-h-9">
+                <iframe id="methodology-video" class="w-full h-96" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="back-to-top" class="back-to-top bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-indigo-700 transition">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script>
-        // Menu Mobile
-        const menuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
+        // Menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
         
-        menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
         });
         
-        // Fechar menu ao clicar em um link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
+        // Filtro de cursos
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const courses = document.querySelectorAll('.course-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active', 'bg-indigo-600', 'text-white');
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+                
+                const category = button.dataset.category;
+                
+                // Show all courses if 'all' is selected
+                if (category === 'all') {
+                    courses.forEach(course => {
+                        course.style.display = 'block';
+                    });
+                    return;
+                }
+                
+                // Filter courses by category
+                courses.forEach(course => {
+                    if (course.dataset.category === category) {
+                        course.style.display = 'block';
+                    } else {
+                        course.style.display = 'none';
+                    }
+                });
             });
-        });
-        
-        // Testimonials Slider
-        const testimonials = document.querySelectorAll('.testimonial');
-        const dots = document.querySelectorAll('.slider-dot');
-        let currentSlide = 0;
-        
-        function showSlide(n) {
-            testimonials.forEach(testimonial => {
-                testimonial.classList.remove('active');
-            });
-            dots.forEach(dot => {
-                dot.classList.remove('active');
-            });
-            
-            currentSlide = (n + testimonials.length) % testimonials.length;
-            testimonials[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
-        }
-        
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-            });
-        });
-        
-        // Auto-rotate testimonials
-        setInterval(() => {
-            showSlide(currentSlide + 1);
-        }, 5000);
-        
-        // Form submission
-        const contactForm = document.getElementById('form-contato');
-        
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simulação de envio
-            const formData = new FormData(contactForm);
-            const formValues = Object.fromEntries(formData.entries());
-            
-            console.log('Formulário enviado:', formValues);
-            
-            // Mostrar mensagem de sucesso
-            alert('Obrigado por sua mensagem! Entraremos em contato em breve.');
-            
-            // Resetar formulário
-            contactForm.reset();
         });
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
@@ -1065,95 +786,318 @@
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
+                    targetElement.scrollIntoView({
                         behavior: 'smooth'
                     });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
                 }
             });
         });
         
-        // Scroll animation
-        const observerOptions = {
-            threshold: 0.1
+        // Modal de detalhes do curso
+        const courseModal = document.getElementById('course-modal');
+        const closeModal = document.getElementById('close-modal');
+        const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+        const modalCourseTitle = document.getElementById('modal-course-title');
+        const modalCourseContent = document.getElementById('modal-course-content');
+        
+        // Dados dos cursos (simulando um banco de dados)
+        const coursesData = {
+            1: {
+                title: "Desenvolvimento Web Full Stack",
+                description: "Domine HTML, CSS, JavaScript, React, Node.js e MongoDB para criar aplicações web completas do zero. Aprenda a construir projetos reais que simulam desafios do mercado de trabalho.",
+                duration: "120 horas",
+                level: "Intermediário",
+                price: "R$ 497",
+                rating: "4.9",
+                students: "1.2k",
+                modules: [
+                    "Fundamentos da Web (HTML5, CSS3, JavaScript ES6+)",
+                    "Front-end Moderno com React.js",
+                    "Back-end com Node.js e Express",
+                    "Banco de Dados com MongoDB",
+                    "Autenticação e Segurança",
+                    "Deploy e DevOps Básico"
+                ],
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80"
+            },
+            2: {
+                title: "Desenvolvimento Mobile com Flutter",
+                description: "Crie apps nativos para iOS e Android com um único código usando Flutter e Dart. Aprenda desde os fundamentos até conceitos avançados como animações, gerenciamento de estado e integração com APIs.",
+                duration: "90 horas",
+                level: "Intermediário",
+                price: "R$ 397",
+                rating: "4.8",
+                students: "850",
+                modules: [
+                    "Introdução ao Flutter e Dart",
+                    "Widgets e Layouts",
+                    "Navegação e Rotas",
+                    "Gerenciamento de Estado",
+                    "Integração com APIs REST",
+                    "Publicação nas lojas"
+                ],
+                image: "https://images.unsplash.com/photo-1558655146-6c222b05fcc1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80"
+            },
+            3: {
+                title: "Data Science para Iniciantes",
+                description: "Introdução prática a Python, Pandas, Machine Learning e análise de dados. Aprenda a coletar, limpar, analisar e visualizar dados para extrair insights valiosos.",
+                duration: "60 horas",
+                level: "Iniciante",
+                price: "R$ 297",
+                rating: "4.7",
+                students: "1.5k",
+                modules: [
+                    "Fundamentos de Python para Data Science",
+                    "Manipulação de Dados com Pandas",
+                    "Visualização com Matplotlib e Seaborn",
+                    "Introdução ao Machine Learning",
+                    "Análise Exploratória de Dados",
+                    "Projeto Final Integrado"
+                ],
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            },
+            4: {
+                title: "UX/UI Design Avançado",
+                description: "Aprenda a criar interfaces incríveis com Figma, prototipagem e design thinking. Domine os princípios de UX, arquitetura da informação e design systems para criar produtos digitais de alta qualidade.",
+                duration: "80 horas",
+                level: "Avançado",
+                price: "R$ 347",
+                rating: "4.9",
+                students: "980",
+                modules: [
+                    "Fundamentos de UX Design",
+                    "Ferramentas do Figma",
+                    "Design Thinking",
+                    "Arquitetura da Informação",
+                    "Design Systems",
+                    "Prototipagem e Testes"
+                ],
+                image: "https://images.unsplash.com/photo-1541462608143-67571c6738dd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            },
+            5: {
+                title: "Marketing Digital Completo",
+                description: "Domine SEO, Google Ads, Facebook Ads, Email Marketing e Analytics. Aprenda estratégias comprovadas para atrair clientes e aumentar vendas através do marketing digital.",
+                duration: "70 horas",
+                level: "Intermediário",
+                price: "R$ 397",
+                rating: "4.8",
+                students: "1.1k",
+                modules: [
+                    "Fundamentos de Marketing Digital",
+                    "SEO e Conteúdo",
+                    "Google Ads e Facebook Ads",
+                    "Email Marketing",
+                    "Google Analytics",
+                    "Estratégias de Conversão"
+                ],
+                image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80"
+            },
+            6: {
+                title: "SQL e Banco de Dados",
+                description: "Aprenda SQL do zero, modelagem de dados e trabalhe com MySQL e PostgreSQL. Domine consultas avançadas, otimização de bancos de dados e administração básica.",
+                duration: "50 horas",
+                level: "Iniciante",
+                price: "R$ 247",
+                rating: "4.6",
+                students: "750",
+                modules: [
+                    "Fundamentos de Bancos de Dados",
+                    "SQL Básico",
+                    "SQL Avançado",
+                    "Modelagem de Dados",
+                    "MySQL e PostgreSQL",
+                    "Otimização de Consultas"
+                ],
+                image: "https://images.unsplash.com/photo-1548092372-44d6e47a5354?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+            }
         };
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                }
+        // Abrir modal de detalhes do curso
+        viewDetailsButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const courseId = button.dataset.course;
+                const courseData = coursesData[courseId];
+                
+                // Preencher o modal com os dados do curso
+                modalCourseTitle.textContent = courseData.title;
+                
+                // Limpar conteúdo anterior
+                modalCourseContent.innerHTML = '';
+                
+                // Adicionar imagem do curso
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'course-details-header rounded-lg mb-6';
+                headerDiv.style.backgroundImage = `url(${courseData.image})`;
+                modalCourseContent.appendChild(headerDiv);
+                
+                // Adicionar descrição
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.className = 'text-gray-700 mb-6';
+                descriptionDiv.innerHTML = `<p class="mb-4">${courseData.description}</p>`;
+                modalCourseContent.appendChild(descriptionDiv);
+                
+                // Adicionar informações básicas
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 mb-6';
+                infoDiv.innerHTML = `
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-500">Duração</p>
+                        <p class="font-medium">${courseData.duration}</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-500">Nível</p>
+                        <p class="font-medium">${courseData.level}</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-500">Avaliação</p>
+                        <p class="font-medium">${courseData.rating} <i class="fas fa-star text-yellow-400 ml-1"></i></p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-500">Preço</p>
+                        <p class="font-medium text-indigo-600">${courseData.price}</p>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p class="text-sm text-gray-500">Alunos</p>
+                        <p class="font-medium">${courseData.students}</p>
+                    </div>
+                `;
+                modalCourseContent.appendChild(infoDiv);
+                
+                // Adicionar módulos
+                const modulesDiv = document.createElement('div');
+                modulesDiv.className = 'mb-6';
+                modulesDiv.innerHTML = `
+                    <h4 class="text-lg font-bold text-gray-800 mb-3">Módulos do Curso</h4>
+                    <ul class="space-y-2">
+                        ${courseData.modules.map(module => `<li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>${module}</span>
+                        </li>`).join('')}
+                    </ul>
+                `;
+                modalCourseContent.appendChild(modulesDiv);
+                
+                // Mostrar o modal
+                courseModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
             });
-        }, observerOptions);
-        
-        document.querySelectorAll('section, .feature-card, .pricing-card, .blog-card').forEach(element => {
-            observer.observe(element);
         });
         
-        // Simulação de Java (apenas parademonstração)
-// Esta parte simularia a integração com backend Java
-class SoftwareDemo {
-constructor() {
-this.users = [];
-this.features = [
-"Gestão de Projetos",
-"Controle Financeiro",
-"RH e Folha de Pagamento",
-"Relatórios Personalizados",
-"Integração com ERP"
-];
-}
-
-              startFreeTrial(user) {
-            // Simulação de criação de conta
-            const trialUser = {
-                id: Math.random().toString(36).substr(2, 9),
-                name: user.name,
-                email: user.email,
-                company: user.company,
-                plan: "free-trial",
-                expiration: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 dias
-            };
-            
-            this.users.push(trialUser);
-            return trialUser;
-        }
+        // Fechar modal
+        closeModal.addEventListener('click', () => {
+            courseModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
         
-        getFeatures(plan) {
-            if (plan === "free-trial") {
-                return this.features.slice(0, 3); // Apenas 3 funcionalidades no trial
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (event) => {
+            if (event.target === courseModal) {
+                courseModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
             }
-            return this.features;
-        }
-    }
-    
-    // Exemplo de uso da "classe Java"
-    const techSoftDemo = new SoftwareDemo();
-    
-    // Evento para o botão de trial
-    document.querySelectorAll('.btn[href="#demo"]').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        });
+        
+        // Botão de matrícula
+        const enrollBtn = document.getElementById('enroll-btn');
+        enrollBtn.addEventListener('click', () => {
+            alert('Você será redirecionado para a página de matrícula. Em um sistema real, isso levaria ao processo de checkout.');
+        });
+        
+        // Botão de compartilhar
+        const shareBtn = document.getElementById('share-btn');
+        shareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: modalCourseTitle.textContent,
+                    text: 'Confira este curso incrível na Academia Digital!',
+                    url: window.location.href
+                }).catch(err => {
+                    console.log('Erro ao compartilhar:', err);
+                    alert('O compartilhamento não foi concluído. Você pode copiar o link manualmente.');
+                });
+            } else {
+                alert('Seu navegador não suporta a API de compartilhamento. Você pode copiar o link manualmente.');
+            }
+        });
+        
+        // Modal de vídeo
+        const videoModal = document.getElementById('video-modal');
+        const methodologyVideoBtn = document.getElementById('methodology-video-btn');
+        const closeVideoModal = document.getElementById('close-video-modal');
+        
+        methodologyVideoBtn.addEventListener('click', () => {
+            videoModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeVideoModal.addEventListener('click', () => {
+            videoModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Pausar o vídeo quando o modal é fechado
+            const videoIframe = document.getElementById('methodology-video');
+            videoIframe.src = videoIframe.src; // Recarrega o iframe para parar o vídeo
+        });
+        
+        // Fechar modal de vídeo ao clicar fora
+        window.addEventListener('click', (event) => {
+            if (event.target === videoModal) {
+                videoModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // Pausar o vídeo quando o modal é fechado
+                const videoIframe = document.getElementById('methodology-video');
+                videoIframe.src = videoIframe.src;
+            }
+        });
+        
+        // Ver todos os depoimentos
+        const viewAllTestimonials = document.getElementById('view-all-testimonials');
+        viewAllTestimonials.addEventListener('click', () => {
+            alert('Em um sistema real, isso levaria a uma página com todos os depoimentos.');
+        });
+        
+        // Formulário de contato
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Simular login/registro
-            const userEmail = prompt("Para iniciar seu teste gratuito, digite seu email:");
-            if (userEmail) {
-                const user = {
-                    name: "Usuário Demo",
-                    email: userEmail,
-                    company: "Empresa Demo"
-                };
-                
-                const trialAccount = techSoftDemo.startFreeTrial(user);
-                const features = techSoftDemo.getFeatures("free-trial");
-                
-                alert(`Conta de teste criada com sucesso para ${userEmail}!\n\nVocê tem acesso às seguintes funcionalidades:\n- ${features.join("\n- ")}\n\nSeu trial expira em ${trialAccount.expiration.toLocaleDateString()}.`);
-                
-                // Redirecionar para área logada (simulado)
-                window.location.href = "#demo";
+            // Simular envio do formulário
+            const name = document.getElementById('name').value;
+            alert(`Obrigado, ${name}! Sua mensagem foi enviada com sucesso. Em um sistema real, isso seria enviado para um servidor.`);
+            
+            // Limpar formulário
+            contactForm.reset();
+        });
+        
+        // Carregar mais cursos
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        loadMoreBtn.addEventListener('click', () => {
+            alert('Em um sistema real, isso carregaria mais cursos via AJAX ou mostraria uma mensagem indicando que todos os cursos foram carregados.');
+        });
+        
+        // Botão Voltar ao Topo
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
             }
         });
-    });
-</script>
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>
